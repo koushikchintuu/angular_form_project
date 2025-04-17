@@ -1,0 +1,70 @@
+<div class="form-container">
+  <div class="form-card">
+    <div class="form-header">
+      <h2 class="form-title">Get in Touch</h2>
+      <p class="form-subtitle">We'd love to hear from you. Please fill out this form.</p>
+    </div>
+
+    <form [formGroup]="contactForm" (ngSubmit)="onSubmit()">
+      <div class="form-group">
+        <label for="name" class="form-label">Name</label>
+        <input type="text" id="name" formControlName="name" class="form-input"
+          [class.border-red-500]="contactForm.get('name')?.invalid && contactForm.get('name')?.touched"
+          placeholder="Koushik Chintu">
+        <div *ngIf="contactForm.get('name')?.invalid && contactForm.get('name')?.touched" 
+          class="error-message">
+          <span *ngIf="contactForm.get('name')?.errors?.['required']">Name is required</span>
+          <span *ngIf="contactForm.get('name')?.errors?.['minlength']">Name must be at least 2 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" id="email" formControlName="email" class="form-input"
+          [class.border-red-500]="contactForm.get('email')?.invalid && contactForm.get('email')?.touched"
+          placeholder="chintu@example.com">
+        <div *ngIf="contactForm.get('email')?.invalid && contactForm.get('email')?.touched" 
+          class="error-message">
+          <span *ngIf="contactForm.get('email')?.errors?.['required']">Email is required</span>
+          <span *ngIf="contactForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="message" class="form-label">Message</label>
+        <textarea id="message" formControlName="message" rows="4" class="form-textarea"
+          [class.border-red-500]="contactForm.get('message')?.invalid && contactForm.get('message')?.touched"
+          placeholder="Your message here..."></textarea>
+        <div *ngIf="contactForm.get('message')?.invalid && contactForm.get('message')?.touched" 
+          class="error-message">
+          <span *ngIf="contactForm.get('message')?.errors?.['required']">Message is required</span>
+          <span *ngIf="contactForm.get('message')?.errors?.['minlength']">Message must be at least 10 characters</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="file" class="form-label">Attachment (Optional)</label>
+        <div class="file-upload-container">
+          <input type="file" id="file" (change)="onFileSelected($event)" 
+            accept=".jpg,.jpeg,.png,.pdf" class="file-input">
+          <div class="file-info" *ngIf="selectedFile">
+            <span class="file-name">{{ selectedFile.name }}</span>
+            <button type="button" class="remove-file" (click)="removeFile()">Remove</button>
+          </div>
+          <div class="file-preview" *ngIf="filePreview">
+            <img [src]="filePreview" alt="File preview" class="preview-image">
+          </div>
+        </div>
+        <p class="file-hint">Supported formats: JPEG, PNG, PDF (max 5MB)</p>
+      </div>
+
+      <button type="submit" [disabled]="contactForm.invalid || isLoading" class="submit-button">
+        <svg *ngIf="isLoading" class="loading-spinner" fill="none" viewBox="0 0 24 24">
+          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+        </svg>
+        {{ isLoading ? 'Sending...' : 'Send Message' }}
+      </button>
+    </form>
+  </div>
+</div>
